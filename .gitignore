@@ -1,0 +1,15 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+data/
+*.db
+*.db-journal
+playwright-report/
+test-results/
+# vídeo do reel (gerado por ../_video)
+/video/.build
+/video/*.mp4
