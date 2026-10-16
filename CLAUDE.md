@@ -10,6 +10,25 @@
 - Segredos só em `.env` (com `.env.example`). Chaves de API são digitadas numa janela `zenity` que grava direto no `.env`; nunca pedir para colar no chat.
 - Ao terminar a sessão, atualizar a seção **Estado e diário** abaixo e a linha do projeto em `../AGENDA.md`.
 
+## Comandos
+
+- `npm run dev`: Vite em http://localhost:5173 + servidor em 4444 (proxy de `/api`, `/sync`, `/signal`). Encerrar ao fim do dia.
+- `npm run build && npm start`: produção, tudo em http://localhost:4444 (o servidor serve o `dist/`).
+- `npm test`: Vitest (unitários + integração com servidor real em porta aleatória e banco `:memory:`).
+- `npm run test:e2e`: Playwright (build + servidor na porta 4555, `data/e2e.db`; local usa o Chrome do sistema).
+- `npm run lint` · `npm run typecheck` (app e servidor separados) · `npm run format` / `format:check`.
+- `docker compose up --build`: escrito, **não testado** (o notebook não tem Docker).
+
+## Arquitetura e convenções
+
+- **Cliente:** React 19 + Vite 8 + Canvas 2D puro. `shared/board.ts` (classe `Board`) é a única porta de escrita no `Y.Doc`: cada elemento é um `Y.Map` dentro de `doc.getMap('elements')`; geometria sempre em `points` (lista plana). Toda escrita local usa `board.origin` (só ela entra no `Y.UndoManager`); `board.commit()` fecha o grupo do desfazer ao fim do gesto.
+- **Sync (`src/sync/connection.ts`):** IndexedDB + `WebsocketProvider` (relay) + `WebrtcProvider` (só editor), todos no mesmo `Y.Doc` e na mesma `Awareness`.
+- **Servidor (`server/`):** Node 22 roda `.ts` direto (type stripping): só sintaxe apagável (`erasableSyntaxOnly`), imports com extensão `.ts`, sem enums/parameter properties. Uma porta: `/api` (salas, links, snapshots), `/sync/<sala>?t=` (relay y-websocket que descarta updates de leitor), `/signal?room=&t=` (sinalização y-webrtc, só editor e só o tópico `quadro-<sala>`).
+- **Links:** token `<papel>.<HMAC>` sem estado (`server/tokens.ts`), segredo `ROOM_SECRET` no `.env`. Rota do cliente no hash: `#sala=<id>&t=<token>`.
+- **Banco:** `node:sqlite` (experimental no Node 22; o aviso é silenciado com `--disable-warning=ExperimentalWarning`). Trocas para Postgres ficam em `server/store.ts`.
+- **Versões fixadas:** TypeScript 6.0 (o typescript-eslint ainda não aceita o 7), y-websocket 3.1 só no cliente (o `@y/websocket-server` exige Yjs 14).
+- Commits: Conventional Commits, autor Gabriel Nogueira <gabrielnbn@ufba.br> (config local do repositório).
+
 ## Divulgação ao fim do dia (padrão da série)
 
 Instagram/Facebook do usuário: **@ideia_enegocios**.

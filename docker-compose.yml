@@ -1,0 +1,18 @@
+# Sobe tudo com um comando: docker compose up --build  →  http://localhost:4444
+# O ROOM_SECRET vem do .env (copie o .env.example).
+services:
+  quadro:
+    build:
+      context: .
+      args:
+        VITE_ICE_SERVERS: ${VITE_ICE_SERVERS:-[{"urls":"stun:stun.l.google.com:19302"}]}
+    ports:
+      - '4444:4444'
+    environment:
+      ROOM_SECRET: ${ROOM_SECRET:?defina ROOM_SECRET no .env}
+    volumes:
+      - quadro-data:/data
+    restart: unless-stopped
+
+volumes:
+  quadro-data:
