@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "concurrently -k -n web,srv -c cyan,magenta \"vite\" \"node --watch --env-file-if-exists=.env server/index.ts\"",
     "build": "vite build",
-    "start": "node --env-file-if-exists=.env server/index.ts",
+    "start": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/index.ts",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.app.json && tsc -p tsconfig.server.json",
     "format": "prettier --write .",

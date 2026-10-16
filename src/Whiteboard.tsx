@@ -7,6 +7,7 @@ interface Props {
   board: Board
   readOnly: boolean
   author: string
+  onPointer?: (point: { x: number; y: number } | null) => void
 }
 
 function useUndoState(board: Board) {
@@ -27,7 +28,7 @@ function useUndoState(board: Board) {
   return state
 }
 
-export function Whiteboard({ board, readOnly, author }: Props) {
+export function Whiteboard({ board, readOnly, author, onPointer }: Props) {
   const [tool, setTool] = useState<Tool>('pen')
   const [style, setStyle] = useState<Style>({ color: '#1e1e1e', width: 4 })
   const [selected, setSelected] = useState<Set<string>>(() => new Set())
@@ -82,6 +83,7 @@ export function Whiteboard({ board, readOnly, author }: Props) {
         author={author}
         selected={selected}
         onSelect={setSelected}
+        onPointer={onPointer}
       />
       <Toolbar
         tool={tool}
