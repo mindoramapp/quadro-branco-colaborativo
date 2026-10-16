@@ -1,5 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Board } from '../shared/board.ts'
+import { exportPng, exportSvg } from './board/export.ts'
+import { HistoryPanel } from './panels/History.tsx'
+import { SharePanel } from './panels/Share.tsx'
 import type { ConnectionStatus } from './sync/connection.ts'
 import type { Peer } from './sync/Cursors.tsx'
 import type { User } from './sync/user.ts'
@@ -24,11 +27,50 @@ function statusLabel(s: ConnectionStatus): { text: string; tone: 'ok' | 'warn' |
   return { text: s.peers > 0 ? `Ao vivo · ${s.peers} P2P` : 'Ao vivo', tone: 'ok' }
 }
 
-export function TopBar({ status, user, peers, onUser }: Props) {
+type PanelName = 'share' | 'history' | 'export' | null
+
+export function TopBar({ board, roomId, token, readOnly, status, user, peers, onUser }: Props) {
   const [editing, setEditing] = useState(false)
+  const [panel, setPanel] = useState<PanelName>(null)
   const label = statusLabel(status)
+  const toggle = (p: PanelName) => setPanel((cur) => (cur === p ? null : p))
+
+  useEffect(() => {
+    if (!panel) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setPanel(null)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [panel])
   return (
     <div className="topbar">
+      <div className="actions">
+        <button
+          type="button"
+          className="btn"
+          aria-expanded={panel === 'share'}
+          onClick={() => toggle('share')}
+        >
+          Compartilhar
+        </button>
+        {!readOnly && (
+          <button
+            type="button"
+            className="btn"
+            aria-expanded={panel === 'history'}
+            onClick={() => toggle('history')}
+          >
+            Versões
+          </button>
+        )}
+        <button
+          type="button"
+          className="btn"
+          aria-expanded={panel === 'export'}
+          onClick={() => toggle('export')}
+        >
+          Exportar
+        </button>
+      </div>
       <span className={`status ${label.tone}`} data-testid="status" role="status">
         <i />
         {label.text}
@@ -68,6 +110,24 @@ export function TopBar({ status, user, peers, onUser }: Props) {
           </li>
         ))}
       </ul>
+      {panel === 'share' && <SharePanel roomId={roomId} token={token} readOnly={readOnly} />}
+      {panel === 'history' && (
+        <HistoryPanel board={board} roomId={roomId} token={token} author={user.name} />
+      )}
+      {panel === 'export' && (
+        <div className="panel" role="dialog" aria-label="Exportar">
+          <h2>Exportar</h2>
+          <div className="row">
+            <button type="button" className="btn" onClick={() => void exportPng(board.list())}>
+              PNG
+            </button>
+            <button type="button" className="btn" onClick={() => exportSvg(board.list())}>
+              SVG
+            </button>
+          </div>
+          <p className="hint">A imagem é recortada ao conteúdo do quadro.</p>
+        </div>
+      )}
     </div>
   )
 }
