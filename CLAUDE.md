@@ -113,4 +113,11 @@ Comece apresentando o plano da Fase 1.
 
 ## Estado e diário
 
-- **Status:** não iniciado.
+- **Status:** MVP concluído em 16/10/2026 (um dia). Repositório git local na `main`, ainda sem remoto no GitHub.
+- **Plano aprovado (16/10):** Fase 0 base/CI → Fase 1 quadro local (ferramentas, Y.UndoManager, IndexedDB) → Fase 2 servidor (sinalização, relay, tokens, SQLite) + presença → Fase 3 links editor/leitor, exportar PNG/SVG, versões → Fase 4 E2E, README, GIF, Docker, Reel.
+- **Commits:** `4b98db8` base · `38f380a` quadro local · `6cbfcf1` tempo real · `46b98c0` links/exportação/versões · `96ab3ec` E2E + docs + Docker · e o commit da divulgação.
+- **Testes:** 21 no Vitest (unitários + integração com servidor real: convergência, leitor barrado, token inválido, offline/reconexão, persistência, snapshots, sinalização) e 3 E2E no Playwright (3 navegadores; offline + recarga; versões + exportação). Todos passando; lint, tipos, Prettier e build limpos.
+- **Não verificado:** `Dockerfile`/`docker-compose.yml` (sem Docker no notebook) e a CI no GitHub (sem remoto ainda).
+- **Achado:** o "offline" do Playwright/DevTools não derruba um canal WebRTC já aberto; o quadro seguia sincronizando por P2P. O selo passou a mostrar "Sem servidor · N P2P" nesse caso.
+- **Divulgação:** `video/reel.mp4` (30 s, 1080×1920), `video/capa.jpg`, `video/LEGENDA_INSTAGRAM.txt`; GIF de 3 usuários em `docs/demo-3-usuarios.gif`. Para regenerar a cena do site: `npm run dev`, `node video/robos-demo.mjs`, colar `video/.build/link.txt` no `url` da cena `site` e rodar `node gerar-reel.mjs ../P02_quadro-branco-colaborativo` em `../_video`.
+- **Próximos passos (ver README):** TURN, zoom/pan, contas e revogação de links, Postgres + deploy (Fly.io/Render), publicar no GitHub.

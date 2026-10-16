@@ -1,0 +1,50 @@
+{
+  "dia": "Dia 2 de 22",
+  "titulo": "Sua equipe e seu cliente no mesmo quadro",
+  "subtitulo": "Ao vivo. Até sem internet.",
+  "subtituloDestaque": "Até sem internet.",
+  "cores": ["#1f6feb", "#2f9e44"],
+  "duracao": 30,
+  "cenas": [
+    {
+      "tipo": "codigo",
+      "arquivo": "tests/server.test.ts",
+      "linhas": [110, 111, 112, 114, 118],
+      "realce": [110, 118],
+      "legenda": "Caiu a internet? Nada se perde",
+      "destaque": "Nada se perde"
+    },
+    {
+      "tipo": "codigo",
+      "arquivo": "server/relay.ts",
+      "linhas": [106, 107, 108, 109, 110, 111, 112, 113, 114, 115],
+      "realce": [108, 115],
+      "legenda": "Seu cliente vê, só sua equipe edita",
+      "destaque": "só sua equipe edita"
+    },
+    {
+      "tipo": "codigo",
+      "arquivo": "shared/board.ts",
+      "linhas": [28, 31, 33, 35, 38, 39, 40, 41, 42],
+      "realce": [39],
+      "legenda": "Cada um desfaz só o que fez",
+      "destaque": "só o que fez"
+    },
+    {
+      "tipo": "site",
+      "url": "http://localhost:5173/#sala=GERADO_POR_robos-demo.mjs",
+      "legenda": "Todo mundo desenhando junto",
+      "destaque": "junto"
+    }
+  ],
+  "fim": {
+    "linha1": "Quer um site assim?",
+    "servicos": ["Criação de sites", "Reforma do seu site atual", "Mais clientes pela internet"],
+    "cta": "Me chama no direct",
+    "arroba": "@ideia_enegocios"
+  },
+  "duracoes": {
+    "abertura": 3.2,
+    "fim": 4.5
+  }
+}
