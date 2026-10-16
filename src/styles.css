@@ -1,0 +1,146 @@
+:root {
+  --bg: #ffffff;
+  --panel: #ffffffee;
+  --text: #1e1e1e;
+  --muted: #5c6370;
+  --line: #d9dde3;
+  --accent: #1f6feb;
+  --accent-soft: #e7efff;
+  --danger: #c92a2a;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  color: var(--text);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+.board {
+  position: fixed;
+  inset: 0;
+  touch-action: none;
+  display: block;
+}
+
+.loading {
+  padding: 2rem;
+  color: var(--muted);
+}
+
+.toolbar {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px #0000001a;
+  backdrop-filter: blur(6px);
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+}
+
+.tool {
+  min-width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+}
+
+.tool:hover {
+  background: #f1f3f5;
+}
+
+.tool[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tool:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.tool:focus-visible,
+.swatch:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.dot {
+  display: block;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px var(--line);
+  cursor: pointer;
+  margin: 0 2px;
+}
+
+.swatch[aria-pressed='true'] {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.sep {
+  width: 1px;
+  height: 24px;
+  background: var(--line);
+  margin: 0 4px;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #fff4e6;
+  color: #a35200;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.text-input {
+  position: fixed;
+  border: 1px dashed var(--accent);
+  background: transparent;
+  outline: none;
+  resize: none;
+  font-family: sans-serif;
+  line-height: 1.25;
+  padding: 0;
+  min-width: 120px;
+  overflow: hidden;
+}
